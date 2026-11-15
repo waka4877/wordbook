@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Wordbook</string>
+
+    <string name="title_add_word">단어 추가</string>
+    <string name="subtitle_add_word">직접 입력하거나 추천 단어를 선택해 보세요.</string>
+    <string name="target_format">%1$s에 추가</string>
+    <string name="btn_close">✕</string>
+
+    <string name="label_word">일본어</string>
+    <string name="label_reading">읽는 법 (선택)</string>
+    <string name="label_meaning">한글 뜻</string>
+
+    <string name="hint_word">예: 愛</string>
+    <string name="hint_reading">예: あい</string>
+    <string name="hint_meaning">예: 사랑</string>
+
+    <string name="suggest_title">추천 단어</string>
+
+    <string name="btn_add">+ 단어 추가</string>
+    <string name="guide_add">입력한 단어가 단어 목록에 추가돼요.</string>
+
+    <string name="error_word_required">일본어 단어를 입력해 주세요</string>
+    <string name="error_meaning_required">한글 뜻을 입력해 주세요</string>
+</resources>
