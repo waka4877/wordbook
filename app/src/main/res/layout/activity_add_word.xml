@@ -88,6 +88,13 @@
             android:hint="@string/hint_meaning"
             android:inputType="text" />
 
+        <Button
+            android:id="@+id/btnTranslate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/btn_translate" />
+
         <LinearLayout
             android:id="@+id/layoutSuggest"
             android:layout_width="match_parent"

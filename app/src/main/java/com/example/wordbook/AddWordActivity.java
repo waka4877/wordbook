@@ -10,11 +10,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Call;
+
 public class AddWordActivity extends AppCompatActivity {
 
     EditText etWord, etReading, etMeaning;
     TextView tvTarget;
-    Button btnAdd, btnClose;
+    Button btnAdd, btnClose, btnTranslate;
+    DeepLApi deepLApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,13 @@ public class AddWordActivity extends AppCompatActivity {
         tvTarget = findViewById(R.id.tvTarget);
         btnAdd = findViewById(R.id.btnAdd);
         btnClose = findViewById(R.id.btnClose);
+        btnTranslate = findViewById(R.id.btnTranslate);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api-free.deepl.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        deepLApi = retrofit.create(DeepLApi.class);
 
         String wordbookName = getIntent().getStringExtra("wordbookName");
         if (wordbookName == null) {
@@ -45,6 +57,43 @@ public class AddWordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        btnTranslate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                translateMeaning();
+            }
+        });
+    }
+
+    private void translateMeaning() {
+        String meaning = etMeaning.getText().toString().trim();
+
+        if (meaning.isEmpty()) {
+            etMeaning.setError(getString(R.string.error_meaning_required));
+            return;
+        }
+
+        String authKey = "DeepL-Auth-Key " + BuildConfig.DEEPL_API_KEY;
+        DeepLRequest request = new DeepLRequest(meaning, "JA", "KO");
+
+        deepLApi.translate(authKey, request).enqueue(new retrofit2.Callback<DeepLResponse>() {
+            @Override
+            public void onResponse(Call<DeepLResponse> call, retrofit2.Response<DeepLResponse> response) {
+                if (response.isSuccessful() && response.body() != null
+                        && !response.body().translations.isEmpty()) {
+                    String result = response.body().translations.get(0).text;
+                    etWord.setText(result);
+                } else {
+                    Toast.makeText(AddWordActivity.this, "번역 실패: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DeepLResponse> call, Throwable t) {
+                Toast.makeText(AddWordActivity.this, "인터넷 연결을 확인해 주세요", Toast.LENGTH_SHORT).show();
             }
         });
     }

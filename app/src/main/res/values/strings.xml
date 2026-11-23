@@ -21,4 +21,5 @@
 
     <string name="error_word_required">일본어 단어를 입력해 주세요</string>
     <string name="error_meaning_required">한글 뜻을 입력해 주세요</string>
+    <string name="btn_translate">일본어로 번역</string>
 </resources>
